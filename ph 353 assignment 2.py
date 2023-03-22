@@ -49,5 +49,6 @@ def function(x, N):  #input are, x = thing to be put into H=x^2, N = number of t
         #markov[counter] = H
         #counter += 1
     average_markov = np.mean(markov)
-    return average_markov, stat.stdev(markov)
+    uncertainty = np.sqrt((1/(N-1)))*stat.stdev(markov)
+    return average_markov, uncertainty
 
