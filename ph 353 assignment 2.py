@@ -21,7 +21,7 @@ def function(x, N):  #input are, x = thing to be put into H=x^2, N = number of t
     counter = 0
     #newcounter = 0
     T = 300
-    k = 1.38*(10**-23)
+    k = 1
     H = x**2
     markov[counter] = H
     counter += 1
@@ -50,5 +50,30 @@ def function(x, N):  #input are, x = thing to be put into H=x^2, N = number of t
         #counter += 1
     average_markov = np.mean(markov)
     uncertainty = np.sqrt((1/(N-1)))*stat.stdev(markov)
-    return average_markov, uncertainty
+    return average_markov#, uncertainty
 
+
+def plot(x,i,N):
+    test_array = np.zeros(x)
+    x_array = list(range(0,x))
+    count = 0
+    for i in range(0,x):
+        test_array[count] = function(i,N)
+        count += 1
+    plt.plot(x_array,test_array)
+    
+    
+def z(T):
+    k = 1
+    beta = 1/(k*T)
+    return np.sqrt(np.pi/(beta))
+
+def P(T,x,N):
+    k = 1
+    beta = 1/(k*T)
+    return np.exp(-beta*function(x,N))/z(T)
+    
+def U(T):
+    k = 1
+    beta = 1/(k*T)
+    return 1/z(T)*(np.sqrt(np.pi/(4*beta**3)))
