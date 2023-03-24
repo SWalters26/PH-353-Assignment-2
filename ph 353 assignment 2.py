@@ -30,7 +30,7 @@ def function(x, N):  #input are, x = thing to be put into H=x^2, N = number of t
     #while newcounter < N:
     for i in range(N-1):
         if check_case == True:
-            x_new = x_new*random.uniform(0, 2)
+            x_new = x_new*random.uniform(0.9, 1.1)
         H = x_new**2
         delta_H = markov[counter-1]-H
         check_case = True
@@ -50,17 +50,18 @@ def function(x, N):  #input are, x = thing to be put into H=x^2, N = number of t
         #counter += 1
     average_markov = np.mean(markov)
     uncertainty = np.sqrt((1/(N-1)))*stat.stdev(markov)
-    return average_markov#, uncertainty
+    return average_markov, uncertainty
 
 
 def plot(x,i,N):
-    test_array = np.zeros(x)
+    test_array = np.zeros((2,x))
     x_array = list(range(0,x))
     count = 0
     for i in range(0,x):
-        test_array[count] = function(i,N)
+        test_array[:,count] = function(i,N)
         count += 1
-    plt.plot(x_array,test_array)
+    plt.errorbar(x_array,test_array[0], yerr = test_array[1], ecolor='r')
+
     
     
 def z(T):
