@@ -17,51 +17,52 @@ def prob_selector(x):
     
 
 def function(x, N):  #input are, x = thing to be put into H=x^2, N = number of times running the program
-    markov = np.zeros(N)
+    markov = np.zeros(N+1)
+    x_counter = np.zeros(N+1)
     counter = 0
-    #newcounter = 0
+    x_counter[counter] = x
+    newcount = 0
     T = 300
     k = 1
     H = x**2
     markov[counter] = H
     counter += 1
-    x_new = x
     check_case = True
-    #while newcounter < N:
-    for i in range(N-1):
+    while newcount < N:
         if check_case == True:
-            x_new = x_new*random.uniform(0.9, 1.1)
-        H = x_new**2
-        delta_H = markov[counter-1]-H
+            x = x*random.uniform(0.9, 1.1)
+        H = x**2
+        delta_H = markov[counter]-H
         check_case = True
         if np.exp(-(delta_H)/(k*T)) >= 1:
             markov[counter] = H
+            x_counter[counter] = x
             counter += 1
-            #newcounter += 1 
+            newcount +=1
         else:
             if prob_selector(np.exp(-delta_H/(k*T))) == True:
                 markov[counter] = H
+                x_counter[counter] = x
                 counter += 1
-                #newcounter += 1
+                newcount +=1
             else: 
-                check_case = False
-                continue
-        #markov[counter] = H
-        #counter += 1
-    average_markov = np.mean(markov)
+                x = x_counter[counter]
+                counter += 1
+                x_counter[counter] = x
+                newcount +=1
+    average = np.mean(markov)
     uncertainty = np.sqrt((1/(N-1)))*stat.stdev(markov)
-    return average_markov, uncertainty
+    plt.plot(range(0,N),markov[range(0,N)])
+    return average, uncertainty
 
 
-def plot(x,i,N):
-    test_array = np.zeros((2,x))
-    x_array = list(range(0,x))
-    count = 0
-    for i in range(0,x):
-        test_array[:,count] = function(i,N)
-        count += 1
-    plt.errorbar(x_array,test_array[0], yerr = test_array[1], ecolor='r')
-
+def plot(x,N,i):
+    test = np.zeros((2,i))
+    plot_x = list(range(0,i))
+    for n in range(0,i):
+        test[:,n] = function(x,N)
+    plt.errorbar(plot_x,test[0], yerr = test[1], ecolor='r')
+        
     
     
 def z(T):
