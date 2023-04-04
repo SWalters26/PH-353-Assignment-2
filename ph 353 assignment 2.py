@@ -17,52 +17,54 @@ def prob_selector(x):
     
 
 def function(x, N):  #input are, x = thing to be put into H=x^2, N = number of times running the program
-    markov = np.zeros(N+1)
-    x_counter = np.zeros(N+1)
+
     counter = 0
-    x_counter[counter] = x
-    newcount = 0
     T = 300
     k = 1
+    X_values = np.zeros(N)
+    H_array = np.zeros(N)
     H = x**2
-    markov[counter] = H
-    counter += 1
-    check_case = True
-    while newcount < N:
-        if check_case == True:
-            x = x*random.uniform(0.9, 1.1)
+    X_values[counter] = x
+    H_array[counter] = H
+
+    #np.append(X_values,x)
+    #while newcounter < N:
+    for i in range(N-1):
+        
+        x = X_values[counter]
         H = x**2
-        delta_H = markov[counter]-H
-        check_case = True
+        x_trial = x*random.uniform(0.9, 1.1)
+        H_trial = x_trial**2
+        delta_H = H_trial - H
+        
         if np.exp(-(delta_H)/(k*T)) >= 1:
-            markov[counter] = H
-            x_counter[counter] = x
             counter += 1
-            newcount +=1
+            X_values[counter] = x_trial
+            H_array[counter] = H_trial
         else:
             if prob_selector(np.exp(-delta_H/(k*T))) == True:
-                markov[counter] = H
-                x_counter[counter] = x
                 counter += 1
-                newcount +=1
+                X_values[counter] = x_trial
+                H_array[counter] = H_trial
             else: 
-                x = x_counter[counter]
                 counter += 1
-                x_counter[counter] = x
-                newcount +=1
-    average = np.mean(markov)
-    uncertainty = np.sqrt((1/(N-1)))*stat.stdev(markov)
-    plt.plot(range(0,N),markov[range(0,N)])
-    return average, uncertainty
+                X_values[counter] = x
+                H_array[counter] = H    
+                continue
+        #markov[counter] = H
+        #counter += 1
+    H_mean = np.mean(H_array)
+    H_uncertainty = np.sqrt((1/(N-1)))*stat.stdev(H_array)
+    plt.plot(range(0,N),H_array[range(0,N)])
+    plt.plot(range(0,N),X_values[range(0,N)])
+    return H_mean, H_uncertainty
 
-
-def plot(x,N,i):
-    test = np.zeros((2,i))
-    plot_x = list(range(0,i))
-    for n in range(0,i):
-        test[:,n] = function(x,N)
-    plt.errorbar(plot_x,test[0], yerr = test[1], ecolor='r')
-        
+def plot(i,x,N):
+    test_array = np.zeros((2,i))
+    x_array = list(range(0,i))
+    for b in range(0,i):
+        test_array[:,b] = function(x,N)
+    plt.plot(x_array,test_array[0])
     
     
 def z(T):
@@ -79,3 +81,6 @@ def U(T):
     k = 1
     beta = 1/(k*T)
     return 1/z(T)*(np.sqrt(np.pi/(4*beta**3)))
+
+
+
