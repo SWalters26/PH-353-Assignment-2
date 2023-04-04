@@ -16,10 +16,9 @@ def prob_selector(x):
         return False
     
 
-def function(x, N):  #input are, x = thing to be put into H=x^2, N = number of times running the program
+def function(x, N,T):  #input are, x = thing to be put into H=x^2, N = number of times running the program
 
     counter = 0
-    T = 300
     k = 1
     X_values = np.zeros(N)
     H_array = np.zeros(N)
@@ -27,8 +26,6 @@ def function(x, N):  #input are, x = thing to be put into H=x^2, N = number of t
     X_values[counter] = x
     H_array[counter] = H
 
-    #np.append(X_values,x)
-    #while newcounter < N:
     for i in range(N-1):
         
         x = X_values[counter]
@@ -51,36 +48,37 @@ def function(x, N):  #input are, x = thing to be put into H=x^2, N = number of t
                 X_values[counter] = x
                 H_array[counter] = H    
                 continue
-        #markov[counter] = H
-        #counter += 1
+
     H_mean = np.mean(H_array)
     H_uncertainty = np.sqrt((1/(N-1)))*stat.stdev(H_array)
-    plt.plot(range(0,N),H_array[range(0,N)])
-    plt.plot(range(0,N),X_values[range(0,N)])
+    # plt.plot(range(0,N),H_array[range(0,N)])
+    # plt.plot(range(0,N),X_values[range(0,N)])
     return H_mean, H_uncertainty
 
-def plot(i,x,N):
-    test_array = np.zeros((2,i))
-    x_array = list(range(0,i))
-    for b in range(0,i):
-        test_array[:,b] = function(x,N)
-    plt.plot(x_array,test_array[0])
+def plot(x,N,T):
+    test_array = np.zeros((2,T))
+    x_array = np.zeros((1,T))
+    # x_array = list(range(0,T))
+    for b in range(1,T):
+        test_array[:,b] = function(x,N,T)
+        x_array[:,b] = 1/T
+    plt.plot(x_array[0],test_array[0])
     
     
-def z(T):
-    k = 1
-    beta = 1/(k*T)
-    return np.sqrt(np.pi/(beta))
+# def z(T):
+#     k = 1
+#     beta = 1/(k*T)
+#     return np.sqrt(np.pi/(beta))
 
-def P(T,x,N):
-    k = 1
-    beta = 1/(k*T)
-    return np.exp(-beta*function(x,N))/z(T)
+# def P(T,x,N):
+#     k = 1
+#     beta = 1/(k*T)
+#     return np.exp(-beta*function(x,N))/z(T)
     
-def U(T):
-    k = 1
-    beta = 1/(k*T)
-    return 1/z(T)*(np.sqrt(np.pi/(4*beta**3)))
+# def U(T):
+#     k = 1
+#     beta = 1/(k*T)
+#     return 1/z(T)*(np.sqrt(np.pi/(4*beta**3)))
 
 
 
