@@ -2,11 +2,6 @@ import numpy as np
 import random as rand
 import matplotlib.pyplot as plt
 import statistics as stat
-#start with some x
-#guess a new x' from x, can do this by multiplying by some random real number between 0,2 each time 
-#apply accept/reject with probability P = min(1,e^-beta*deltaH), if accepted add x' to list, if rejected add copy of x to list and repeat from step 2 using x_copy
-#delta H = x'^2 - x^2
-#repeat from step 2 using x' as new x 
 
 def metro(x,N):
     count = 0
@@ -45,6 +40,7 @@ def Z(T,x,N):
     return total
     
 def P(T,x,N):
+    #exp(-beta*H)/Z
     k = 1
     P_array = np.zeros(N+1)
     beta = 1/(k*T)
@@ -52,3 +48,17 @@ def P(T,x,N):
     for n in range(len(metro(x, N))):
         P_array[n] = np.exp(-beta*metro_elements[n]**2)/Z(T,x,N)
     return P_array
+
+def U(T,x,N):
+    k=1
+    beta = 1/(k*T)
+    integral_elements = np.zeros(N)
+    metro_elements = metro(x, N)
+    for n in range(N):
+        integral_elements[n] = (metro_elements[n]**2)*np.exp(-beta*(metro_elements[n])**2)
+    U = sum(integral_elements)/Z(T,x,N)
+    return U, (1/(2*beta))
+    
+    
+    
+    
