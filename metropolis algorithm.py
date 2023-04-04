@@ -3,10 +3,9 @@ import random as rand
 import matplotlib.pyplot as plt
 import statistics as stat
 
-def metro(x,N):
+def metro(x,N,T):
     count = 0
     k = 1
-    T = 300
     beta = 1/(k*T)
     x_array = np.zeros(N+1)
     x_array[count] = x
@@ -60,5 +59,13 @@ def U(T,x,N):
     return U, (1/(2*beta))
     
     
-    
-    
+def beta_plot(T,T_N,x,N):   #T = run from 0 to temp T, T_N number of T's to sample
+    k = 1
+    T_array = np.linspace(1,T,T_N)
+    beta_array = 1/(T_array*k)
+    metro_values = np.zeros((N+1,T_N))
+    for n in range(1,T_N):
+        metro_values[:,n] = metro(x,N,T_array[n])
+    plt.plot(beta_array, metro_values[1])
+    plt.xscale("log")
+        
