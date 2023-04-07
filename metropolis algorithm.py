@@ -39,7 +39,7 @@ def Z(T,x,N):
     metro_elements = metro(x,N,T)
     for n in range(len(metro_elements)):
         total += np.exp(-beta*((metro_elements[n])**2))
-    return total, uncertainty#, 1/2*np.sqrt(np.pi/beta), 
+    return total, uncertainty, 1/2*np.sqrt(np.pi/beta), 
     
 def P(T,x,N):
     #exp(-beta*H)/Z
