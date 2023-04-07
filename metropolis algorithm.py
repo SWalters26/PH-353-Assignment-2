@@ -91,6 +91,8 @@ def beta_plot(T_s,T,T_N,x,N):   #T = run from T_s to temp T, T_N number of T's t
     plt.xscale("log")
     '''
     plt.plot(beta_array, Energy_values)
+    plt.xlabel("Inverse T (beta = 1/(k*T)")
+    plt.ylabel("H(x) = x^2")
     return Energy_values
 
 
