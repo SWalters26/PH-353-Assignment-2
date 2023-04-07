@@ -71,7 +71,7 @@ def beta_plot(T_s,T,T_N,x,N):   #T = run from T_s to temp T, T_N number of T's t
     beta_array = 1/(T_array*k)
     Energy_values = np.zeros((T_N,N+1))
     for n in range(T_s,T_N):
-        Energy_values[n,:] = metro(x,N,T_array[n])**2
+        Energy_values[n,:] = metro(x,N,T_array[n])[0]**2
     '''
     b_s = 5 # bin size
     c_list = [c for c in range(N)]
